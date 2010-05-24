@@ -122,6 +122,14 @@ module Wice
       @method_scoping = @klass.send(:scoped_methods)[-1]
     end
 
+    # Declares a callback which will be invoked before the grid is rendered.
+    # The paginated resultset (a collection of ActiveRecord objects) will be passed to the given block giving the application an opportunity to perform some preprocessing 
+    # before the rendering of the cells.
+    # The typical use case is when you need to perform a possibly expensive processing (such as fetching additional data or crunching some numbers) which could benefit 
+    # from being done in a single operation for all displayed records rather than for each item individually.
+    def with_resultset(&block)
+      @resultset_callback = block
+    end
 
     def process_loading_query #:nodoc:
       @saved_query = nil
@@ -232,6 +240,8 @@ module Wice
       with_exclusive_scope do
         @resultset = self.output_csv? ?  @klass.find(:all, @ar_options) : @klass.paginate(@ar_options)
       end
+      invoke_resultset_callback
+      @resultset
     end
 
     # core workflow methods END
@@ -462,7 +472,10 @@ module Wice
       Wice::log("Query with id #{query_id} for grid '#{self.name}' not found!!!") if query.nil?
       query
     end
-
+    
+    def invoke_resultset_callback
+      @resultset_callback.call(@resultset) if @resultset_callback
+    end
 
   end
 
