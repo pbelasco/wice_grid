@@ -1,7 +1,7 @@
 = WiceGrid
 
 Version:: 0.5
-Author::  Yuri Leikind
+Authors::  Yuri Leikind, Xavier Defrang
 Homepage:: http://leikind.org/pages/wicegrid
 Examples online:: http://grid.leikind.org
 News:: http://leikind.org/wicegrid

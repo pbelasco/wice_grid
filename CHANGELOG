@@ -1,3 +1,5 @@
+resultset processing feature from Xavier Defrang
+
 Ruby 1.9.1 compliance
 
 Dropdowns generated with :custom_filter => :auto and :custom_filter => [method chain] are now ordered by option labels
